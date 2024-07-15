@@ -1,6 +1,8 @@
 ## Class {{name}}
 
+```txt
 {{comment}}
+```
 
 ## Properties
 

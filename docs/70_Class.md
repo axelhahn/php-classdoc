@@ -1,13 +1,17 @@
 ## Class axelhahn\phpclassparser
 
+```txt
 
 PHP CLASS PARSER
+
 @author axelhahn
 @license GNU GPL 3.0
 
-@source <https://github.com/axelhahn/TODO>
+@source <https://github.com/axelhahn/php-classdoc>
 
+2024-07-15 v0.1 axelhahn initial version
 
+```
 
 ## Properties
 

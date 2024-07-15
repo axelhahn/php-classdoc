@@ -9,4 +9,4 @@ Compatible to PHP 8.3
 👤 Author: Axel Hahn \
 📄 Source: <https://github.com/axelhahn/php-classdoc> \
 📜 License: GNU GPL 3.0 \
-📗 Docs: TODO
+📗 Docs: <https://www.axel-hahn.de/docs/php-classdoc/>

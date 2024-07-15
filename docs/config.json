@@ -1,5 +1,5 @@
 {
-    "title": "php-classdoc",
+    "title": "PHP class doc generator",
     "author": "Axel Hahn",
     "tagline": "Create a documentation for a php class file",
     "ignore": {
@@ -18,7 +18,7 @@
         },
         "links": {
             "Git Repo": "https://github.com/axelhahn/php-classdoc/",
-            "Axels Docs": "https://www.axel-hahn.de/docs/"
+            "Axels Docs": "https://www.axel-hahn.de/docs/php-classdoc/"
         },
         "theme": "daux-blue",
         "search": true

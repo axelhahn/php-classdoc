@@ -16,7 +16,6 @@ namespace axelhahn;
 class phpclassparser
 {
 
-
     /**
      * Class name to analyze
      * @var string
@@ -399,7 +398,7 @@ class phpclassparser
         $aReturn = [
             //'raw'=>$sPhpDoc,
             'filtered' => $sFiltered,
-            'comment' => preg_replace('/@(param|return|var).*\n/', '', $sFiltered),
+            'comment' => trim(preg_replace('/@(param|return|var).*\n/', '', $sFiltered)),
         ];
         foreach ($aTags as $sKey) {
             if (preg_match('/@' . $sKey . '/', $sFiltered)) {

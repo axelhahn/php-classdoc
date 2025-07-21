@@ -7,27 +7,27 @@
 # 2025-07-21  v1.0  axelhahn  initial version
 # ====================================================================== 
 
-cd "$( dirname $0)/.."
+echo "
 
-files="
-    src/phpclass-parser.class.php
+#####|  Generate class documentation  |#####
+
 "
-outdir="docs/70_Classes"
-sourceurl="https://github.com/axelhahn/php-classdoc//blob/main"
+cd "$( dirname "$0" )" || exit 1
+. "config.sh" || exit 2
+cd "$PARSERDIR" || exit 3
 
-# ----------------------------------------------------------------------
-# MAIN
-# ----------------------------------------------------------------------
-
-for myfile in $files
+for phpclassfile in $FILELIST
 do
-    outfile="$outdir/$(basename "$myfile").md"
-
+    echo "----------------------------------------------------------------------"
+    echo "processing: $phpclassfile"
     ./parse-class.php \
         --debug \
-        --source "$sourceurl/$myfile" \
+        --source "$SOURCEURL/$phpclassfile" \
         --out md \
-        "$myfile" > "$outfile"
+        "$APPDIR/$phpclassfile" > "$OUTDIR/$(basename $phpclassfile).md"
 done
+echo "----------------------------------------------------------------------"
+
+echo "Done".
 
 # ----------------------------------------------------------------------

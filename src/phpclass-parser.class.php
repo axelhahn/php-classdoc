@@ -58,15 +58,15 @@ class phpclassparser
 
         // remove all php comments
         $commentTokens = [T_COMMENT];
-    
+
         if (defined('T_DOC_COMMENT')) {
             $commentTokens[] = T_DOC_COMMENT; // PHP 5
-        }        
+        }
         if (defined('T_ML_COMMENT')) {
             $commentTokens[] = T_ML_COMMENT;  // PHP 4
         }
         $tokens = token_get_all($sFiledata);
-        foreach ($tokens as $token) {    
+        foreach ($tokens as $token) {
             if (is_array($token)) {
                 if (in_array($token[0], $commentTokens)) {
                     continue;
@@ -142,7 +142,15 @@ class phpclassparser
         }
     }
 
+    public function setSourceUrl(string $sSourceUrl): void
+    {
+        $this->sSourceUrl = $sSourceUrl;
+    }
 
+    /**
+     * Get metainformation for the class
+     * @return array
+     */
     public function getClassInfos(): array
     {
         $aReturn = [];
@@ -152,6 +160,8 @@ class phpclassparser
         $aReturn['classname'] = $this->sClassname;
         $aReturn['namespace'] = $this->oRefClass->getNamespaceName();
         $aReturn['phpdoc'] = $this->parsePhpdocBlock($this->oRefClass->getDocComment());
+        // $aReturn['comment'] = $aReturn['phpdoc']['filtered'];
+        $aReturn['comment'] = $aReturn['phpdoc']['raw'];
         $aReturn['comment'] = $aReturn['phpdoc']['filtered'];
 
         return $aReturn;
@@ -204,6 +214,10 @@ class phpclassparser
                     ? trim($aPhpDoc['tags']['param'][$iCount - 1])
                     : ''
                 ;
+
+                $sStringValue=($iCount <= $iRequired ? '\<required\>' : '\<optional\>')
+                    . ' $'.$oParam->getName()
+                    ;
                 // see https://www.php.net/manual/en/class.reflectionparameter.php
                 $aParam = [
                     'name' => $oParam->getName(),
@@ -212,11 +226,14 @@ class phpclassparser
                     'required' => $iCount <= $iRequired,
                     'default' => $iCount <= $iRequired ? NULL : $oParam->getDefaultValue(),
                     'raw' => $oParam->__toString(),
+                    /*
                     'string' => str_replace(
                         ['<', '>'],
                         ['\<', '\>'],
                         preg_replace('@Parameter\ \#.*\[\ (.*)\ \]@', '$1', $oParam->__toString())
                     ),
+                    */
+                    'string' => $sStringValue,
                 ];
                 $aParam['phpdoc'] = $sPhpDoc4Param;
                 $aParam['phpdoc_line'] = $sPhpDoc4Param;
@@ -224,11 +241,13 @@ class phpclassparser
                     ? preg_replace('/ .*/', '', $sPhpDoc4Param)
                     : ''
                 ;
-                $aParam['phpdoc_descr'] = ($sPhpDoc4Param
-                    ? preg_replace('/^[a-z]* [\$A-Za-z0-9]* /', '', $sPhpDoc4Param)
-                    : ''
-                )
-                ;
+                // $aParam['phpdoc_descr'] = ($sPhpDoc4Param
+                //     ? preg_replace('/^[a-z]* [\$A-Za-z0-9]* /', '', $sPhpDoc4Param)
+                //     : ''
+                // )
+                // ;
+                $aParam['phpdoc_descr'] = str_replace(chr(13), '<br>', $sPhpDoc4Param);
+
                 $aParam['type'] = $aParam['type']
                     ? $aParam['type']
                     : $aParam['phpdoc_type'] . ' *'
@@ -244,7 +263,9 @@ class phpclassparser
                 'linefrom' => $o->getStartLine(),
                 'lineto' => $o->getEndLine(),
                 'lines' => $o->getEndLine() - $o->getStartLine() + 1,
+                'sourceurl' => $this->sSourceUrl ? $this->sSourceUrl."#L".$o->getStartLine() : "",
                 'comment' => $aPhpDoc['comment'] ?? '',
+                'raw' => $aPhpDoc['raw'] ?? '',
                 'parameters_count' => $oMethod->getNumberOfParameters(),
                 'parameters_required' => $oMethod->getNumberOfRequiredParameters(),
                 'parameters' => $aParams,
@@ -260,6 +281,7 @@ class phpclassparser
                 )
             )
             ;
+            $aMethod['returntype'] = $aMethod['returntype']?:'void';
 
             $aReturn[$sMethodname] = $aMethod;
         }
@@ -352,16 +374,57 @@ class phpclassparser
     {
         $aReturn = [];
 
+        /*
+        $tokens = token_get_all('<?php '.$sPhpDoc);
+
+        foreach ($tokens as $token) {
+            if (is_array($token)) {
+                echo "Line {$token[2]}: ", token_name($token[0]), " ('{$token[1]}')", PHP_EOL;
+            }
+        }
+        */
+
         $sFiltered = $sPhpDoc;
-        $sFiltered = preg_replace('@[\ \t][\ \t]*@', ' ', $sFiltered); // remove multiple spaces
 
         $sFiltered = preg_replace('@^\/\*\*@', '', $sFiltered); // remove first comment line
         $sFiltered = preg_replace('@.*\*\/@', '', $sFiltered);  // remove last comment line
-        $sFiltered = preg_replace('@ \* @', '', $sFiltered);    // remove " * " 
-        $sFiltered = preg_replace('@ \*@', '', $sFiltered);     // remove " *" 
-        // $sFiltered=preg_replace('@\n@', '<br>', $sFiltered);
-        // $sFiltered=preg_replace('@^\<br\>@', '', $sFiltered);
 
+        $sFiltered = preg_replace('@[\ \t]*\*@', '', $sFiltered); // remove " * " 
+        // $sFiltered = preg_replace('@\n @', '', $sFiltered);       // remove leading spaces
+
+
+        // TODO: put filter to output specific configuration
+        $sFiltered = str_replace(['<code>', '</code>'], ["\n\n```txt ", "```\n\n"], $sFiltered);
+        $sFiltered = preg_replace('@ *\n@', "\n", $sFiltered);    // remove
+
+        $iStart = strpos($sFiltered, '@param');
+        if (!$iStart) $iStart =  strpos($sFiltered, '@return');
+        $sComment = $iStart ? substr($sFiltered, 0, $iStart) : $sFiltered;
+
+        $sParams = substr($sFiltered, $iStart);
+        $aReturn = [
+            'raw' => $sPhpDoc,
+            'filtered' => $sFiltered,
+            // 'comment' => preg_replace('/@(param|return|var).*\n/', '', $sFiltered),
+            'comment' => trim($sComment),
+            'params' => $sParams,
+            'tags' => $this->_parsePhpdocTags($sFiltered),
+        ];
+
+
+        // print_r($aReturn['tags']);
+
+        return $aReturn;
+    }
+
+    /**
+     * Summary of _parsePhpdocTags
+     * @param string $sFiltered  filtered doc block
+     * @return array
+     */
+    protected function _parsePhpdocTags($sFiltered): array
+    {
+        $aReturn = [];
         // all @-Tags
         $aTags = [
             "abstract",
@@ -395,18 +458,48 @@ class phpclassparser
             "var",
             "version"
         ];
-        $aReturn = [
-            //'raw'=>$sPhpDoc,
-            'filtered' => $sFiltered,
-            'comment' => trim(preg_replace('/@(param|return|var).*\n/', '', $sFiltered)),
-        ];
-        foreach ($aTags as $sKey) {
-            if (preg_match('/@' . $sKey . '/', $sFiltered)) {
-                preg_match_all('/@' . $sKey . '(.*?)\n/U', $sFiltered, $aMatch);
-                $aReturn['tags'][$sKey] = $aMatch[1];
+
+
+        // echo "$sFiltered\n\n";
+
+        $sMyTag='_comment';
+        $sTagData='';
+        $bParseAsFirstLine=false;
+        foreach(explode('@', $sFiltered) as $sLine){
+            $sFirstword=explode(' ', $sLine)[0];
+            if(array_search($sFirstword, $aTags)!==false){
+                // store collected lines
+                $aReturn[$sMyTag][]=$sTagData;
+                $sTagData='';
+
+                // start new tag
+                $sMyTag=$sFirstword;
+                if ($sMyTag=="param"){
+                    $bParseAsFirstLine=true;
+                }
             }
+            $sLine=preg_replace("/^$sMyTag */", '', $sLine);
+
+            // parse "string $sAppid      id of an app"
+            if($bParseAsFirstLine){
+                $bParseAsFirstLine=false;
+                $sTagData.=preg_replace("/^[a-z\|]*[\t ]*\\$[a-zA-Z0-9_]*[\t ]*/", '', $sLine)."\n";
+                //                         ^       ^      ^              ^
+                //                    type(s)  space     dollar+varname  spaces
+            } else {
+                $sTagData.=$sLine;
+            }
+            // echo "$sMyTag > $sLine\n";
         }
 
+        // write last data
+        $aReturn[$sMyTag][]=$sTagData;
+        
+
+        if(strstr($sFiltered, '__Get a flat array with all application ids')){
+            echo "```txt ".print_r($aReturn, 1). "```\n";
+            die();
+        }
         return $aReturn;
     }
 

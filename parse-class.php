@@ -9,6 +9,7 @@
  * @source <https://github.com/axelhahn/php-classdoc>
  * 
  * 2024-07-15  v0.1  axelhahn  initial version
+ * 2025-07-21        axelhahn
  */
 
 // ------------------------------------------------------------
@@ -143,7 +144,9 @@ if(!$sClass){
     _wd("Init parser with param 2: $sClass");
     $oParser->setClassname($sClass);
 }
-
+if($sourceurl){
+    $oParser->setSourceUrl($sourceurl);
+}
 // ---------- generate output
 
 $sOut="";

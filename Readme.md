@@ -1,10 +1,10 @@
-# PHP Doc generator (BETA)
+# PHP Doc generator
 
 A class and cli script to generate a markdown doc page from a class file.
 
 You can customize the output or create output in another wanted format.
 
-Compatible to PHP 8.3
+Compatible to PHP 8.4
 
 👤 Author: Axel Hahn \
 📄 Source: <https://github.com/axelhahn/php-classdoc> \

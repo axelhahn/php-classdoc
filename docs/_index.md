@@ -11,8 +11,6 @@
 
 Free software and Open Source
 
-Compatible to PHP 8.3
-
 👤 Author: Axel Hahn \
 📄 Source: <https://github.com/axelhahn/php-classdoc> \
 📜 License: GNU GPL 3.0 \

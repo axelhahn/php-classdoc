@@ -7,4 +7,3 @@ git clone https://github.com/axelhahn/php-classdoc.git
 ```
 
 This creates a subfolder `php-classdoc`.
-

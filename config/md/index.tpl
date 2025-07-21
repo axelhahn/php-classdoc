@@ -1,16 +1,14 @@
-## Class {{name}}
+## 📦 Class {{classname}}
 
 ```txt
 {{comment}}
 ```
 
-## Properties
+## 🔶 Properties
 
 {{properties.tpl}}
 
-## Methods
+## 🔷 Methods
 
-{{methods.tpl}}
-
----
+{{methods.tpl}}---
 Generated with Axels PHP class doc parser.

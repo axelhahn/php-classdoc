@@ -1,1 +1,1 @@
-{{string}} | {{type}} | {{phpdoc_descr}}
+| {{string}} | `{{type}}` | {{phpdoc_descr}}

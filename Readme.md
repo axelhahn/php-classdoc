@@ -10,3 +10,7 @@ Compatible to PHP 8.4
 📄 Source: <https://github.com/axelhahn/php-classdoc> \
 📜 License: GNU GPL 3.0 \
 📗 Docs: <https://www.axel-hahn.de/docs/php-classdoc/>
+
+## Example
+
+see [docs/70_Classes/phpclass-parser.class.php.md](docs/70_Classes/phpclass-parser.class.php.md)

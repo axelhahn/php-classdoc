@@ -11,4 +11,4 @@
 ## 🔷 Methods
 
 {{methods.tpl}}---
-Generated with Axels PHP class doc parser.
+Generated with [Axels PHP class doc parser](https://github.com/axelhahn/php-classdoc)

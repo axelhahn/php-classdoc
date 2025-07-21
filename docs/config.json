@@ -18,7 +18,7 @@
         },
         "links": {
             "Git Repo": "https://github.com/axelhahn/php-classdoc/",
-            "Axels Docs": "https://www.axel-hahn.de/docs/php-classdoc/"
+            "Axels Docs": "https://www.axel-hahn.de/docs/"
         },
         "theme": "daux-blue",
         "search": true

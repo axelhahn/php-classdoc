@@ -1,5 +1,5 @@
 ---
-title: Documentation of class axelhahn\phpclassparser
+title: axelhahn\phpclassparser
 generator: Axels php-classdoc; https://github.com/axelhahn/php-classdoc
 ---
 

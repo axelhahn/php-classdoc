@@ -1,5 +1,5 @@
 ---
-title: Documentation of class {{classname}}
+title: {{classname}}
 generator: Axels php-classdoc; https://github.com/axelhahn/php-classdoc
 ---
 

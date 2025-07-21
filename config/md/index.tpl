@@ -1,3 +1,8 @@
+---
+title: Documentation of class {{classname}}
+generator: Axels php-classdoc; https://github.com/axelhahn/php-classdoc
+---
+
 ## 📦 Class {{classname}}
 
 ```txt

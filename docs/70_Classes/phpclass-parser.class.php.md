@@ -1,3 +1,8 @@
+---
+title: Documentation of class axelhahn\phpclassparser
+generator: Axels php-classdoc; https://github.com/axelhahn/php-classdoc
+---
+
 ## 📦 Class axelhahn\phpclassparser
 
 ```txt
@@ -23,7 +28,7 @@
 
 Constructs a new instance of the class.
 
-Line [38](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L38) (5 lines)
+Line [38](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L38) (5 lines)
 
 **Return**: `void`
 
@@ -37,7 +42,7 @@ Line [38](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parse
 
 Get metainformation for the class
 
-Line [154](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L154) (15 lines)
+Line [154](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L154) (15 lines)
 
 **Return**: `array`
 
@@ -47,7 +52,7 @@ Line [154](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-pars
 
 Get a hash of methods with its type, parameters, phpdoc infos
 
-Line [175](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L175) (116 lines)
+Line [175](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L175) (116 lines)
 
 **Return**: `array`
 
@@ -61,7 +66,7 @@ Line [175](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-pars
 
 Get a hash of properties with its type, phpdoc infos, default value, attributes, etc.
 
-Line [299](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L299) (66 lines)
+Line [299](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L299) (66 lines)
 
 **Return**: `array`
 
@@ -76,7 +81,7 @@ Line [299](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-pars
 Sets the class file to be analyzed.
  It will detect namespace and class name to initialize the class.
 
-Line [51](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L51) (74 lines)
+Line [51](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L51) (74 lines)
 
 **Return**: `string|bool`
 
@@ -93,7 +98,7 @@ Set a classname.
  Or use setClassFile() to load the class file and detect the classname.
  @see setClassFile()
 
-Line [134](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L134) (10 lines)
+Line [134](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L134) (10 lines)
 
 **Return**: `void`
 
@@ -107,7 +112,7 @@ Line [134](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-pars
 
 
 
-Line [145](https://github.com/axelhahn/php-classdoc//blob/main/src/phpclass-parser.class.php#L145) (4 lines)
+Line [145](https://github.com/axelhahn/php-classdoc/blob/main/src/phpclass-parser.class.php#L145) (4 lines)
 
 **Return**: `void`
 

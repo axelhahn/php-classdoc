@@ -119,6 +119,7 @@ _wd("Info: class file is $sClassfile");
 
 _wd("Check existence of file [$sClassfile]");
 if(!file_exists($sClassfile)){
+    _wd("File Not found");
     echo "ERROR: file not found: $sClassfile".PHP_EOL;
     exit(2);
 }

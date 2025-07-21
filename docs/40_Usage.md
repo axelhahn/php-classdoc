@@ -31,8 +31,8 @@ To generate multiple markdown doc files per - one class file - there is a generi
 
 * In your project create a subdir "scripts".
 * Into this subdir 
-  * copy the file `scripts/generate_classdoc.sh` --> `<your-project>>/scripts/generate_classdoc.sh`
-  * copy `scripts/config.sh.dist` as `<your-project>>/scripts/config.sh`.
+  * copy the file `scripts/generate_classdoc.sh` --> `<your-project>/scripts/generate_classdoc.sh`
+  * copy `scripts/config.sh.dist` as `<your-project>/scripts/config.sh`.
 
 ### Update configuration
 
@@ -68,4 +68,4 @@ PARSERDIR="$( dirname $0)/../../php-classdoc"
 
 ### Generate
 
-Start the script `<your-project>>/scripts/generate_classdoc.sh` tu generate/ update the markdown files.
+Start the script `<your-project>/scripts/generate_classdoc.sh` to generate/ update the markdown files.

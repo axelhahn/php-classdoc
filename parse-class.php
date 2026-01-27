@@ -145,7 +145,7 @@ if(!$sClass){
     _wd("Init parser with param 2: $sClass");
     $oParser->setClassname($sClass);
 }
-if($sourceurl){
+if($sourceurl??false){
     $oParser->setSourceUrl($sourceurl);
 }
 // ---------- generate output

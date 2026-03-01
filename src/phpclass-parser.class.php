@@ -11,6 +11,7 @@ namespace axelhahn;
  * @source <https://github.com/axelhahn/php-classdoc>
  * 
  * 2024-07-15  v0.1  axelhahn  initial version
+ * 2026-03-01  v0._  axelhahn  last changes
  */
 
 class phpclassparser
@@ -168,8 +169,8 @@ class phpclassparser
     }
 
     /**
-     * Get a hash of methods with its type, parameters, phpdoc infos
-     * @param string $bPublicOnly  flag: public only methods or all; default: true (=only public methods)
+     * Get a list of all methods of a class
+     * @param mixed $bPublicOnly
      * @return array
      */
     public function getMethods($bPublicOnly = true): array
@@ -180,27 +181,40 @@ class phpclassparser
         }
 
         foreach ($this->oRefClass->getMethods() as $o) {
-            $aMethod = [];
-            $sMethodname = $o->name;
             if (!$bPublicOnly == false && !$o->isPublic()) {
                 continue;
             }
-            $sType = '';
-            if ($o->isPublic())
-                $sType .= 'public ';
-            if ($o->isPrivate())
-                $sType .= 'private ';
-            if ($o->isProtected())
-                $sType .= 'protected ';
-            if ($o->isStatic())
-                $sType .= 'static ';
-            if ($o->isAbstract())
-                $sType .= 'abstract ';
-            if ($o->isFinal())
-                $sType .= 'final ';
+            $aReturn[] = $o->name;
+        }
+        return $aReturn;
+    }
+
+    /**
+     * Get a hash of methods with its type, parameters, phpdoc infos
+     * @param string $sMethodname  mame of the method
+     * @return array
+     */
+    public function getMethod(string $sMethodname): array
+    {
+
+        // foreach ($this->oRefClass->getMethods() as $o) {
+            $aMethod = [];
 
             $oMethod = $this->oRefClass->getMethod($sMethodname);
 
+            $sType = '';
+            if ($oMethod->isPublic())
+                $sType .= 'public ';
+            if ($oMethod->isPrivate())
+                $sType .= 'private ';
+            if ($oMethod->isProtected())
+                $sType .= 'protected ';
+            if ($oMethod->isStatic())
+                $sType .= 'static ';
+            if ($oMethod->isAbstract())
+                $sType .= 'abstract ';
+            if ($oMethod->isFinal())
+                $sType .= 'final ';
 
             $iCount = 0;
             $iRequired = $oMethod->getNumberOfRequiredParameters();
@@ -260,10 +274,10 @@ class phpclassparser
             $aMethod = [
                 'type' => $sType,
                 'name' => $sMethodname,
-                'linefrom' => $o->getStartLine(),
-                'lineto' => $o->getEndLine(),
-                'lines' => $o->getEndLine() - $o->getStartLine() + 1,
-                'sourceurl' => $this->sSourceUrl ? $this->sSourceUrl."#L".$o->getStartLine() : "",
+                'linefrom' => $oMethod->getStartLine(),
+                'lineto' => $oMethod->getEndLine(),
+                'lines' => $oMethod->getEndLine() - $oMethod->getStartLine() + 1,
+                'sourceurl' => $this->sSourceUrl ? $this->sSourceUrl."#L".$oMethod->getStartLine() : "",
                 'comment' => $aPhpDoc['comment'] ?? '',
                 'raw' => $aPhpDoc['raw'] ?? '',
                 'parameters_count' => $oMethod->getNumberOfParameters(),
@@ -283,10 +297,7 @@ class phpclassparser
             ;
             $aMethod['returntype'] = $aMethod['returntype']?:'void';
 
-            $aReturn[$sMethodname] = $aMethod;
-        }
-        ksort($aReturn);
-        return $aReturn;
+        return $aMethod;
     }
 
 

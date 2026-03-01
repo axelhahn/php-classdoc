@@ -44,19 +44,38 @@ function _wd(string $s): void
  * @return void
  */
 function showHelp(){
-    echo "
-Axels docpage generator for php class files.
+    echo "_______________________________________________________________________________
 
-USAGE: parse-class.php [OPTIONS] <classfile.php> [<classname>]
+AXELs docpage generator for php class files.
+_______________________________________________________________________________
 
-OPTIONS:
-    -h, --help            show this help
+This tool creates a documentation of a given php class file with all methods,
+and its parameters.
 
-    -d, --debug           enable debug output (written on STDERR)
-    -o, --out <type>      set output type: 'md' (default) or 'html'
-    -s, --source <url>    set url of source file in main branch; default: none
+👤 Author: Axel Hahn
+📄 Source: https://github.com/axelhahn/php-classdoc
+📜 License: GNU GPL 3.0
+📗 Docs: https://www.axel-hahn.de/docs/php-classdoc/
 
-PARAMETERS:
+
+✨ USAGE: parse-class.php [OPTIONS] <classfile.php> [<classname>]
+
+
+🔸 OPTIONS:
+    -h, --help            Show this help
+
+    -d, --debug           Enable debug output (written on STDERR)
+    -o, --out <type>      Set output type: 'md' (default).
+                          It is a subdir below folder './config/'
+    -s, --source <url>    Set url of source file in main branch; default: none
+                          This url is used to create a link to the source file
+                          and line number of a method. 
+                          Examples:
+                          https://github.com/<user>/<project>/blob/main
+                          https://gitlab.<domain>/<group>/<project>/-/tree/main
+
+
+🔹 PARAMETERS:
     <classfile.php>       path to class file
     <classname>           optional: if classname is not detected you can set 
                           it manually
@@ -178,10 +197,10 @@ foreach($oParser->getProperties() as $aProperty){
 _wd("Processing methods");
 
 $sOutMethods="";
-foreach($oParser->getMethods() as $sMethodname => $aMethod){
+foreach($oParser->getMethods() as $sMethodname){
     _wd("Method: $sMethodname");
     $aMReplace=[];
-    
+    $aMethod=$oParser->getMethod($sMethodname);
     foreach($aMethod as $sKey => $value){
         
         if(!is_array($value)){
